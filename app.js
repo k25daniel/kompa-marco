@@ -581,6 +581,7 @@
     ctx.save();
     
     // Crear camino de recorte con bordes redondeados (38px de radio)
+    ctx.beginPath();
     drawRoundedRectPath(ctx, WINDOW_X, WINDOW_Y, WINDOW_W, WINDOW_H, WINDOW_RADIUS);
     ctx.clip();
 
@@ -638,19 +639,78 @@
   // ==========================================================================
 
   /**
+   * Dibuja la máscara perimetral sólida de 1080x1920 con las 4 esquinas redondeadas exteriores.
+   * La ventana central (WINDOW_X, WINDOW_Y, WINDOW_W, WINDOW_H) queda 100% INTACTA y TRANSPARENTE,
+   * sin depender de evenodd ni sufrir incompatibilidades de Canvas en Safari/WebKit móvil.
+   */
+  function drawSolidFrameMask(c, color) {
+    c.save();
+    c.fillStyle = color;
+
+    const x1 = WINDOW_X;
+    const y1 = WINDOW_Y;
+    const x2 = WINDOW_X + WINDOW_W;
+    const y2 = WINDOW_Y + WINDOW_H;
+    const r = WINDOW_RADIUS;
+
+    // 1. Franja Superior (0 a 290 px)
+    c.fillRect(0, 0, CANVAS_WIDTH, y1);
+
+    // 2. Franja Inferior (1540 a 1920 px)
+    c.fillRect(0, y2, CANVAS_WIDTH, CANVAS_HEIGHT - y2);
+
+    // 3. Franja Lateral Izquierda (0 a 60 px)
+    c.fillRect(0, y1, x1, WINDOW_H);
+
+    // 4. Franja Lateral Derecha (1020 a 1080 px)
+    c.fillRect(x2, y1, CANVAS_WIDTH - x2, WINDOW_H);
+
+    // 5. Las 4 esquinas curvas exteriores (rellenan el ángulo exterior de 90° respetando el radio)
+    // Esquina Superior Izquierda
+    c.beginPath();
+    c.moveTo(x1, y1);
+    c.lineTo(x1 + r, y1);
+    c.arc(x1 + r, y1 + r, r, -Math.PI / 2, Math.PI, true);
+    c.closePath();
+    c.fill();
+
+    // Esquina Superior Derecha
+    c.beginPath();
+    c.moveTo(x2, y1);
+    c.lineTo(x2, y1 + r);
+    c.arc(x2 - r, y1 + r, r, 0, -Math.PI / 2, true);
+    c.closePath();
+    c.fill();
+
+    // Esquina Inferior Izquierda
+    c.beginPath();
+    c.moveTo(x1, y2);
+    c.lineTo(x1, y2 - r);
+    c.arc(x1 + r, y2 - r, r, Math.PI, Math.PI / 2, true);
+    c.closePath();
+    c.fill();
+
+    // Esquina Inferior Derecha
+    c.beginPath();
+    c.moveTo(x2, y2);
+    c.lineTo(x2 - r, y2);
+    c.arc(x2 - r, y2 - r, r, Math.PI / 2, 0, true);
+    c.closePath();
+    c.fill();
+
+    c.restore();
+  }
+
+  /**
    * VARIANTE 1: OFICIAL KOMPA COSTA RICA 2026
-   * Base #07111E con recorte evenodd, Isotipo sinuoso, acentos multicolor de colección,
+   * Base #07111E perimetral transparente, Isotipo sinuoso, acentos multicolor de colección,
    * handle @KOMPA.CR y pulseras modulares de silicona con placas metálicas grabadas.
    */
   function renderFrameOficial(c) {
     c.save();
 
-    // Fondo KOMPA INK con recorte central transparente (evenodd)
-    c.fillStyle = PALETTE.ink;
-    c.beginPath();
-    c.rect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-    drawRoundedRectPath(c, WINDOW_X, WINDOW_Y, WINDOW_W, WINDOW_H, WINDOW_RADIUS);
-    c.fill('evenodd');
+    // Fondo KOMPA INK perimetral con ventana central 100% transparente
+    drawSolidFrameMask(c, PALETTE.ink);
 
     // Borde elegante alrededor de la ventana de foto
     c.lineWidth = 3;
@@ -720,11 +780,8 @@
   function renderFrameSport(c) {
     c.save();
 
-    c.fillStyle = PALETTE.ink;
-    c.beginPath();
-    c.rect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-    drawRoundedRectPath(c, WINDOW_X, WINDOW_Y, WINDOW_W, WINDOW_H, WINDOW_RADIUS);
-    c.fill('evenodd');
+    // Fondo KOMPA INK perimetral con ventana central 100% transparente
+    drawSolidFrameMask(c, PALETTE.ink);
 
     // Borde dinámico con gradiente deportivo
     c.lineWidth = 4;
@@ -778,11 +835,8 @@
   function renderFrameTravel(c) {
     c.save();
 
-    c.fillStyle = PALETTE.ink;
-    c.beginPath();
-    c.rect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-    drawRoundedRectPath(c, WINDOW_X, WINDOW_Y, WINDOW_W, WINDOW_H, WINDOW_RADIUS);
-    c.fill('evenodd');
+    // Fondo KOMPA INK perimetral con ventana central 100% transparente
+    drawSolidFrameMask(c, PALETTE.ink);
 
     // Borde fino color Turquesa Océano
     c.lineWidth = 3.5;
