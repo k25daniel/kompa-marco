@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="es" class="h-full bg-[#07111E] text-white">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>KOMPA Marco Stories · Crea Tu Propia Historia</title>
+  
+  <!-- Meta tags para SEO y compartir en redes -->
+  <meta name="description" content="Marco oficial KOMPA Costa Rica para Historias de Instagram en 1080x1920. Captura tu foto, encuadra y comparte tu historia.">
+  <meta name="theme-color" content="#07111E">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta property="og:title" content="KOMPA · Marco Oficial para Historias">
+  <meta property="og:description" content="Crea tu propia historia con el marco oficial KOMPA Costa Rica.">
+  <meta property="og:type" content="website">
+
+  <!-- Google Fonts: Montserrat (500, 600, 700, 800, 900) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,500;0,600;0,700;0,800;0,900;1,700;1,800&display=swap" rel="stylesheet">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            kompa: {
+              ink: '#07111E',
+              white: '#FFFFFF',
+              sand: '#F4F0E9',
+              metal: '#B5B8B7',
+              // Acentos de Colección
+              meta: '#FFD100',      // Amarillo Meta
+              oceano: '#2EC4B6',    // Turquesa Océano
+              rosa: '#F24C8B',      // Rosa Vibrante
+              naturaleza: '#2E7D5B',// Verde Naturaleza
+              cumbre: '#F26430'     // Naranja Cumbre
+            }
+          },
+          fontFamily: {
+            montserrat: ['Montserrat', 'sans-serif']
+          },
+          boxShadow: {
+            'kompa-glow': '0 0 25px rgba(46, 196, 182, 0.35)',
+            'kompa-gold': '0 0 25px rgba(255, 209, 0, 0.35)'
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- QRCode.js para generación de QR en cliente -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+  <!-- Estilos personalizados -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="h-full w-full overflow-hidden font-montserrat select-none touch-manipulation bg-[#07111E] flex flex-col items-center justify-between">
+
+  <!-- ========================================== -->
+  <!-- HEADER SUPERIOR                            -->
+  <!-- ========================================== -->
+  <header class="w-full max-w-md px-4 py-3 flex items-center justify-between z-30 shrink-0 bg-[#07111E]/90 backdrop-blur-md border-b border-white/10">
+    <div class="flex items-center space-x-2.5">
+      <!-- Isotipo SVG KOMPA -->
+      <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-white/10 to-white/5 border border-white/20 p-1 flex items-center justify-center shadow-inner">
+        <svg viewBox="0 0 100 100" class="w-full h-full" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- Montaña geométrica exterior -->
+          <polygon points="50,15 88,85 12,85" stroke="#FFFFFF" stroke-width="6" stroke-linejoin="round" fill="none" />
+          <!-- Camino sinuoso interior KOMPA -->
+          <path d="M 38 85 Q 50 65 38 52 Q 28 40 50 20" stroke="#FFD100" stroke-width="5" stroke-linecap="round" fill="none" />
+          <path d="M 62 85 Q 50 65 62 52 Q 72 40 50 20" stroke="#2EC4B6" stroke-width="3" stroke-dasharray="3 3" stroke-linecap="round" fill="none" />
+        </svg>
+      </div>
+      <div>
+        <div class="flex items-center space-x-1.5">
+          <span class="text-base font-black tracking-[0.25em] text-white">KOMPA</span>
+          <span class="text-[10px] px-1.5 py-0.5 rounded bg-white/10 text-kompa-sand font-bold tracking-wider">CR</span>
+        </div>
+        <p class="text-[9px] font-semibold tracking-widest text-kompa-sand/80 uppercase">Crea Tu Propia Historia</p>
+      </div>
+    </div>
+
+    <!-- Acciones en Header: Selector modo Cámara/Edición, QR, Info -->
+    <div class="flex items-center space-x-2">
+      <!-- Botón Código QR -->
+      <button id="btnOpenQR" class="p-2 rounded-xl bg-white/10 hover:bg-white/20 active:scale-95 transition border border-white/15 text-kompa-sand flex items-center space-x-1 text-xs font-bold" title="Código QR para eventos">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"/>
+        </svg>
+        <span class="hidden sm:inline">QR</span>
+      </button>
+
+      <!-- Botón Info / Ayuda -->
+      <button id="btnOpenHelp" class="p-2 rounded-xl bg-white/10 hover:bg-white/20 active:scale-95 transition border border-white/15 text-kompa-sand" title="Instrucciones">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- ========================================== -->
+  <!-- ÁREA PRINCIPAL: VIEWPORT 9:16              -->
+  <!-- ========================================== -->
+  <main class="relative w-full flex-1 flex items-center justify-center p-2 min-h-0 overflow-hidden">
+    
+    <!-- Contenedor con relación de aspecto fija 9:16 escalada responsive -->
+    <div id="canvasViewport" class="relative w-full max-w-[390px] aspect-[9/16] max-h-[82vh] rounded-[24px] overflow-hidden shadow-2xl border border-white/15 bg-black flex items-center justify-center select-none">
+      
+      <!-- Video elemento oculto para stream de cámara -->
+      <video id="cameraVideo" autoplay playsinline muted class="hidden"></video>
+
+      <!-- Canvas interactivo principal (1080x1920 interno) -->
+      <canvas id="mainCanvas" width="1080" height="1920" class="w-full h-full object-contain cursor-grab active:cursor-grabbing touch-none block"></canvas>
+
+      <!-- Overlay de Flash al disparar la cámara -->
+      <div id="flashOverlay" class="absolute inset-0 bg-white opacity-0 pointer-events-none transition-opacity duration-300 z-20"></div>
+
+      <!-- Cuenta regresiva 3... 2... 1... -->
+      <div id="countdownOverlay" class="absolute inset-0 bg-black/60 backdrop-blur-sm hidden items-center justify-center z-25 pointer-events-none">
+        <span id="countdownNumber" class="text-8xl font-black text-kompa-meta animate-ping drop-shadow-[0_0_20px_rgba(255,209,0,0.8)]">3</span>
+      </div>
+
+      <!-- Indicador de modo Cámara Activa -->
+      <div id="liveBadge" class="absolute top-4 left-4 z-10 px-2.5 py-1 rounded-full bg-red-600/90 text-white text-[10px] font-black tracking-widest uppercase flex items-center space-x-1.5 shadow-lg border border-red-400/40">
+        <span class="w-2 h-2 rounded-full bg-white animate-pulse"></span>
+        <span>EN VIVO</span>
+      </div>
+
+      <!-- Guía interactiva táctil (desaparece al tocar) -->
+      <div id="gestureHint" class="absolute bottom-6 left-1/2 -translate-x-1/2 z-10 px-3.5 py-1.5 rounded-full bg-black/75 backdrop-blur-md text-kompa-sand text-[11px] font-medium tracking-wide border border-white/20 pointer-events-none flex items-center space-x-2 shadow-lg transition-opacity duration-500 opacity-90">
+        <svg class="w-3.5 h-3.5 text-kompa-meta" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 11.5V14m0-2.5v-6a1.5 1.5 0 113 0m-3 6a1.5 1.5 0 00-3 0v2a7.5 7.5 0 0015 0v-5a1.5 1.5 0 00-3 0m-6-3V11m0-5.5v-1a1.5 1.5 0 013 0v1m0 0V11m0-5.5a1.5 1.5 0 013 0v3m0 0V11"/>
+        </svg>
+        <span>Arrastra para mover · Pellizca para zoom</span>
+      </div>
+    </div>
+  </main>
+
+  <!-- ========================================== -->
+  <!-- PANEL INFERIOR DE CONTROLES                -->
+  <!-- ========================================== -->
+  <footer class="w-full max-w-md px-3 pt-2 pb-4 z-30 shrink-0 bg-[#07111E]/95 backdrop-blur-md border-t border-white/10 flex flex-col space-y-2.5">
+    
+    <!-- 1. SELECTOR DE VARIANTES DE MARCO -->
+    <div class="flex items-center space-x-2 overflow-x-auto pb-1 no-scrollbar justify-start sm:justify-center">
+      <span class="text-[10px] font-bold text-kompa-metal uppercase tracking-wider pl-1 pr-1 shrink-0">Marco:</span>
+      
+      <!-- Variante 1: Oficial -->
+      <button data-variant="oficial" class="frame-variant-btn active px-3 py-1.5 rounded-full text-xs font-bold transition flex items-center space-x-1.5 shrink-0 border border-white/20 bg-white text-kompa-ink shadow">
+        <span class="w-2.5 h-2.5 rounded-full bg-[#FFD100]"></span>
+        <span>Oficial</span>
+      </button>
+
+      <!-- Variante 2: Sport -->
+      <button data-variant="sport" class="frame-variant-btn px-3 py-1.5 rounded-full text-xs font-bold transition flex items-center space-x-1.5 shrink-0 border border-white/10 bg-white/5 text-kompa-sand hover:bg-white/10">
+        <span class="w-2.5 h-2.5 rounded-full bg-[#F26430]"></span>
+        <span>Sport</span>
+      </button>
+
+      <!-- Variante 3: Travel -->
+      <button data-variant="travel" class="frame-variant-btn px-3 py-1.5 rounded-full text-xs font-bold transition flex items-center space-x-1.5 shrink-0 border border-white/10 bg-white/5 text-kompa-sand hover:bg-white/10">
+        <span class="w-2.5 h-2.5 rounded-full bg-[#2EC4B6]"></span>
+        <span>Travel</span>
+      </button>
+
+      <!-- Variante 4: Minimal -->
+      <button data-variant="minimal" class="frame-variant-btn px-3 py-1.5 rounded-full text-xs font-bold transition flex items-center space-x-1.5 shrink-0 border border-white/10 bg-white/5 text-kompa-sand hover:bg-white/10">
+        <span class="w-2.5 h-2.5 rounded-full bg-white"></span>
+        <span>Minimal</span>
+      </button>
+
+      <!-- Variante 5: Subir PNG Propio -->
+      <label class="frame-variant-btn px-3 py-1.5 rounded-full text-xs font-bold transition flex items-center space-x-1.5 shrink-0 border border-dashed border-white/30 bg-white/5 text-kompa-meta hover:bg-white/10 cursor-pointer">
+        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/>
+        </svg>
+        <span>Subir PNG</span>
+        <input type="file" id="customFrameInput" accept="image/png" class="hidden">
+      </label>
+    </div>
+
+    <!-- 2. BARRA DE HERRAMIENTAS DE EDICIÓN (ZOOM, ROTAR, CENTRAR) -->
+    <div id="editingTools" class="flex items-center justify-between px-2 py-1 bg-white/5 rounded-2xl border border-white/10">
+      
+      <!-- Control de Zoom con Slider -->
+      <div class="flex items-center space-x-2 flex-1 max-w-[210px]">
+        <button id="btnZoomOut" class="w-7 h-7 rounded-lg bg-white/10 hover:bg-white/20 active:scale-90 transition flex items-center justify-center text-kompa-sand text-sm font-bold">
+          -
+        </button>
+        <input type="range" id="zoomSlider" min="0.5" max="3" step="0.05" value="1" class="w-full accent-kompa-meta cursor-pointer h-1.5 bg-white/20 rounded-lg">
+        <button id="btnZoomIn" class="w-7 h-7 rounded-lg bg-white/10 hover:bg-white/20 active:scale-90 transition flex items-center justify-center text-kompa-sand text-sm font-bold">
+          +
+        </button>
+      </div>
+
+      <!-- Acciones de Rotación y Centrado -->
+      <div class="flex items-center space-x-1.5 pl-2 border-l border-white/10">
+        <!-- Rotar 90° -->
+        <button id="btnRotate" class="p-2 rounded-xl bg-white/10 hover:bg-white/20 active:scale-90 transition text-kompa-sand" title="Rotar 90°">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+          </svg>
+        </button>
+
+        <!-- Centrar y Reajustar -->
+        <button id="btnResetTransform" class="p-2 rounded-xl bg-white/10 hover:bg-white/20 active:scale-90 transition text-kompa-sand" title="Centrar fotografía">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- 3. ACCIONES PRINCIPALES (CÁMARA / CAPTURA / COMPARTIR) -->
+    
+    <!-- SUB-ESTADO A: CONTROLES DE CÁMARA (VISTA EN VIVO) -->
+    <div id="cameraControls" class="flex items-center justify-around px-2 pt-1">
+      
+      <!-- Botón Subir desde Galería -->
+      <label class="w-12 h-12 rounded-2xl bg-white/10 hover:bg-white/20 active:scale-95 transition border border-white/15 flex flex-col items-center justify-center text-kompa-sand cursor-pointer shadow" title="Subir desde galería">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+        </svg>
+        <span class="text-[8px] font-bold mt-0.5">Galería</span>
+        <input type="file" id="galleryInput" accept="image/*" class="hidden">
+      </label>
+
+      <!-- BOTÓN DISPARADOR PRINCIPAL (SHUTTER) -->
+      <button id="btnShutter" class="relative group w-18 h-18 rounded-full bg-white p-1.5 shadow-[0_0_30px_rgba(255,255,255,0.4)] active:scale-90 transition transform" title="Tomar Foto">
+        <div class="w-15 h-15 rounded-full border-2 border-kompa-ink bg-white flex items-center justify-center group-hover:bg-kompa-sand transition">
+          <div class="w-12 h-12 rounded-full bg-kompa-meta flex items-center justify-center shadow-inner">
+            <svg class="w-6 h-6 text-kompa-ink" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M12 9a3 3 0 100 6 3 3 0 000-6zm-7 3a7 7 0 1114 0 7 7 0 01-14 0z"/>
+            </svg>
+          </div>
+        </div>
+      </button>
+
+      <!-- Botón Temporizador (0s / 3s) -->
+      <button id="btnTimer" class="w-12 h-12 rounded-2xl bg-white/10 hover:bg-white/20 active:scale-95 transition border border-white/15 flex flex-col items-center justify-center text-kompa-sand shadow" title="Temporizador">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+        </svg>
+        <span id="timerLabel" class="text-[9px] font-black mt-0.5">0s</span>
+      </button>
+
+      <!-- Botón Cambiar Cámara (Frontal / Trasera) -->
+      <button id="btnFlipCamera" class="w-12 h-12 rounded-2xl bg-white/10 hover:bg-white/20 active:scale-95 transition border border-white/15 flex flex-col items-center justify-center text-kompa-sand shadow" title="Alternar Cámara">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/>
+        </svg>
+        <span class="text-[8px] font-bold mt-0.5">Girar</span>
+      </button>
+    </div>
+
+    <!-- SUB-ESTADO B: CONTROLES TRAS CAPTURAR O SUBIR FOTO -->
+    <div id="capturedControls" class="hidden flex-col space-y-2 pt-1">
+      
+      <!-- BOTÓN PRINCIPAL: COMPARTIR EN HISTORIAS -->
+      <button id="btnShareStory" class="w-full py-3.5 px-4 rounded-2xl font-black text-sm tracking-wider uppercase text-kompa-ink bg-gradient-to-r from-kompa-meta via-kompa-oceano to-kompa-rosa shadow-kompa-glow active:scale-[0.98] transition flex items-center justify-center space-x-2.5">
+        <!-- Ícono Instagram -->
+        <svg class="w-5 h-5 text-kompa-ink" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+        </svg>
+        <span>Compartir en Historias</span>
+      </button>
+
+      <!-- BOTONES SECUNDARIOS: DESCARGAR + TOMAR OTRA -->
+      <div class="grid grid-cols-2 gap-2">
+        <button id="btnDownload" class="py-2.5 px-3 rounded-xl font-bold text-xs tracking-wider uppercase bg-white/10 hover:bg-white/15 text-kompa-sand border border-white/15 active:scale-95 transition flex items-center justify-center space-x-1.5">
+          <svg class="w-4 h-4 text-kompa-meta" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+          </svg>
+          <span>Descargar HD</span>
+        </button>
+
+        <button id="btnRetake" class="py-2.5 px-3 rounded-xl font-bold text-xs tracking-wider uppercase bg-white/10 hover:bg-white/15 text-kompa-sand border border-white/15 active:scale-95 transition flex items-center justify-center space-x-1.5">
+          <svg class="w-4 h-4 text-kompa-rosa" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/>
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/>
+          </svg>
+          <span>Tomar Otra</span>
+        </button>
+      </div>
+
+    </div>
+
+  </footer>
+
+  <!-- ========================================== -->
+  <!-- MODAL: GENERADOR DE CÓDIGO QR PARA EVENTOS -->
+  <!-- ========================================== -->
+  <div id="qrModal" class="fixed inset-0 bg-black/85 backdrop-blur-md hidden items-center justify-center z-50 p-4 transition-all duration-300">
+    <div class="bg-[#07111E] border border-white/20 rounded-3xl w-full max-w-sm p-6 flex flex-col items-center space-y-4 shadow-2xl relative">
+      
+      <!-- Botón Cerrar Modal -->
+      <button id="btnCloseQR" class="absolute top-4 right-4 p-2 text-kompa-metal hover:text-white rounded-full bg-white/5 border border-white/10">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+        </svg>
+      </button>
+
+      <!-- Encabezado Modal -->
+      <div class="text-center space-y-1">
+        <div class="inline-flex items-center space-x-1.5 px-3 py-1 rounded-full bg-kompa-meta/15 text-kompa-meta text-xs font-bold border border-kompa-meta/30">
+          <span>EVENTOS & STANDS</span>
+        </div>
+        <h3 class="text-lg font-black tracking-wider text-white">CÓDIGO QR OFICIAL</h3>
+        <p class="text-xs text-kompa-sand/80">Escanea con la cámara del celular para abrir el marco directamente.</p>
+      </div>
+
+      <!-- Tarjeta Contenedora del QR -->
+      <div class="p-4 bg-white rounded-2xl shadow-xl flex items-center justify-center border-4 border-kompa-sand">
+        <div id="qrcodeContainer" class="flex items-center justify-center"></div>
+      </div>
+
+      <!-- Campo de URL editable -->
+      <div class="w-full space-y-1.5">
+        <label for="qrUrlInput" class="text-[11px] font-bold text-kompa-metal uppercase tracking-wider block">URL de destino:</label>
+        <div class="flex items-center space-x-1 bg-white/5 border border-white/15 rounded-xl px-3 py-2">
+          <input type="url" id="qrUrlInput" class="w-full bg-transparent text-xs text-white focus:outline-none font-mono" value="https://www.kompacr.com/marco">
+          <button id="btnCopyUrl" class="text-kompa-meta text-xs font-bold uppercase hover:underline shrink-0">Copiar</button>
+        </div>
+      </div>
+
+      <!-- Botón Exportar Cartel QR en PNG -->
+      <button id="btnDownloadQRPNG" class="w-full py-3 px-4 rounded-xl font-black text-xs uppercase tracking-wider bg-white text-kompa-ink hover:bg-kompa-sand active:scale-95 transition shadow flex items-center justify-center space-x-2">
+        <svg class="w-4 h-4 text-kompa-ink" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+        </svg>
+        <span>Descargar Cartel QR (PNG 600×680)</span>
+      </button>
+
+    </div>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- MODAL: INSTRUCCIONES Y RECOMENDACIONES    -->
+  <!-- ========================================== -->
+  <div id="helpModal" class="fixed inset-0 bg-black/85 backdrop-blur-md hidden items-center justify-center z-50 p-4 transition-all duration-300">
+    <div class="bg-[#07111E] border border-white/20 rounded-3xl w-full max-w-sm p-6 flex flex-col space-y-4 shadow-2xl relative text-left">
+      
+      <!-- Botón Cerrar -->
+      <button id="btnCloseHelp" class="absolute top-4 right-4 p-2 text-kompa-metal hover:text-white rounded-full bg-white/5 border border-white/10">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+        </svg>
+      </button>
+
+      <div class="space-y-1">
+        <span class="text-xs font-bold text-kompa-oceano uppercase tracking-wider">KOMPA Costa Rica</span>
+        <h3 class="text-lg font-black tracking-wider text-white">¿CÓMO COMPARTIR TU HISTORIA?</h3>
+      </div>
+
+      <div class="space-y-3 text-xs text-kompa-sand">
+        <div class="flex items-start space-x-2.5">
+          <span class="w-6 h-6 rounded-full bg-kompa-meta/20 text-kompa-meta font-black flex items-center justify-center shrink-0 border border-kompa-meta/40">1</span>
+          <p><strong class="text-white">Encuadra y captura:</strong> Tómate una selfie con la cámara en vivo o sube una foto de tu galería.</p>
+        </div>
+        <div class="flex items-start space-x-2.5">
+          <span class="w-6 h-6 rounded-full bg-kompa-oceano/20 text-kompa-oceano font-black flex items-center justify-center shrink-0 border border-kompa-oceano/40">2</span>
+          <p><strong class="text-white">Ajusta tu foto:</strong> Usa tus dedos para mover y hacer zoom. Elige tu variante de marco favorita.</p>
+        </div>
+        <div class="flex items-start space-x-2.5">
+          <span class="w-6 h-6 rounded-full bg-kompa-rosa/20 text-kompa-rosa font-black flex items-center justify-center shrink-0 border border-kompa-rosa/40">3</span>
+          <p><strong class="text-white">Sube a Instagram:</strong> Toca "Compartir en Historias", añade stickers o música y etiqueta a <span class="text-kompa-meta font-bold">@KOMPA.CR</span> para que te reposteemos.</p>
+        </div>
+      </div>
+
+      <div class="p-3 bg-white/5 rounded-2xl border border-white/10 flex items-center space-x-3">
+        <div class="w-10 h-7 rounded bg-[#002B7F] relative overflow-hidden border border-white/20 shrink-0">
+          <div class="absolute inset-x-0 top-1.5 bottom-1.5 bg-white"></div>
+          <div class="absolute inset-x-0 top-2.5 bottom-2.5 bg-[#CE1126]"></div>
+        </div>
+        <p class="text-[11px] text-kompa-sand font-medium">Hecho con pasión en Costa Rica para exploradores y deportistas de todo el mundo.</p>
+      </div>
+
+      <button id="btnUnderstood" class="w-full py-3 rounded-xl font-bold text-xs uppercase tracking-wider bg-white/10 hover:bg-white/20 text-white border border-white/20 transition">
+        ¡Entendido!
+      </button>
+    </div>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- MODAL: FALLBACK / NOTIFICACIÓN DESCARGA    -->
+  <!-- ========================================== -->
+  <div id="fallbackModal" class="fixed inset-0 bg-black/85 backdrop-blur-md hidden items-center justify-center z-50 p-4 transition-all duration-300">
+    <div class="bg-[#07111E] border border-white/20 rounded-3xl w-full max-w-sm p-6 flex flex-col items-center space-y-4 shadow-2xl relative text-center">
+      
+      <!-- Icono de Descarga Exitosa -->
+      <div class="w-16 h-16 rounded-full bg-kompa-oceano/20 border-2 border-kompa-oceano text-kompa-oceano flex items-center justify-center shadow-lg">
+        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/>
+        </svg>
+      </div>
+
+      <div class="space-y-1">
+        <h3 class="text-lg font-black tracking-wider text-white">¡IMAGEN GUARDADA!</h3>
+        <p class="text-xs text-kompa-sand/90">Tu historia en 1080×1920 se ha descargado en tu dispositivo.</p>
+      </div>
+
+      <div class="p-3.5 bg-white/5 rounded-2xl border border-white/10 text-xs text-kompa-sand space-y-2 text-left">
+        <p class="font-bold text-white flex items-center space-x-1.5">
+          <span>📲</span> <span>Siguiente paso:</span>
+        </p>
+        <p>Abre <strong class="text-kompa-meta">Instagram</strong>, crea una nueva <strong>Historia</strong>, selecciona esta imagen de tu galería y etiqueta a <strong class="text-white">@KOMPA.CR</strong> 🇨🇷.</p>
+      </div>
+
+      <div class="w-full flex flex-col space-y-2">
+        <a id="btnOpenInstagram" href="https://instagram.com" target="_blank" rel="noopener noreferrer" class="w-full py-3 px-4 rounded-xl font-black text-xs uppercase tracking-wider bg-gradient-to-r from-kompa-rosa to-kompa-cumbre text-white active:scale-95 transition shadow flex items-center justify-center space-x-2">
+          <span>Abrir Instagram</span>
+        </a>
+        <button id="btnCloseFallback" class="w-full py-2.5 rounded-xl font-bold text-xs uppercase tracking-wider text-kompa-metal hover:text-white transition">
+          Cerrar
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div id="toastNotification" class="fixed top-16 left-1/2 -translate-x-1/2 z-50 pointer-events-none transition-all duration-300 opacity-0 -translate-y-2">
+    <div class="px-4 py-2 rounded-full bg-white/95 text-kompa-ink font-bold text-xs shadow-2xl flex items-center space-x-2 border border-black/10">
+      <span id="toastIcon">✨</span>
+      <span id="toastMessage">Notificación</span>
+    </div>
+  </div>
+
+  <!-- Scripts de la Aplicación -->
+  <script src="app.js"></script>
+</body>
+</html>

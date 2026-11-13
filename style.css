@@ -1,0 +1,91 @@
+/* ==========================================================================
+   KOMPA MARCO STORIES - SISTEMA DE ESTILOS VISUALES 2026
+   ========================================================================== */
+
+/* Respeto estricto a las zonas seguras de dispositivos móviles con notch e islas dinámicas */
+:root {
+  --sat: env(safe-area-inset-top, 0px);
+  --sab: env(safe-area-inset-bottom, 0px);
+  --sal: env(safe-area-inset-left, 0px);
+  --sar: env(safe-area-inset-right, 0px);
+}
+
+body {
+  padding-top: var(--sat);
+  padding-bottom: var(--sab);
+  padding-left: var(--sal);
+  padding-right: var(--sar);
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+}
+
+/* Ocultar barra de scroll en contenedores desplazables horizontalmente */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Canvas interactivo: sin acciones por defecto del navegador para soportar gestos precisos */
+#mainCanvas {
+  touch-action: none;
+}
+
+/* Estilo de los botones selectores de variantes */
+.frame-variant-btn {
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.frame-variant-btn.active {
+  background-color: #FFFFFF !important;
+  color: #07111E !important;
+  border-color: #FFFFFF !important;
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.4);
+}
+
+/* Efecto de destello de flash */
+.flash-active {
+  opacity: 0.95 !important;
+}
+
+/* Sliders estilizados */
+input[type=range] {
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #FFD100;
+  cursor: pointer;
+  box-shadow: 0 0 8px rgba(255, 209, 0, 0.8);
+  border: 2px solid #07111E;
+}
+
+input[type=range]::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #FFD100;
+  cursor: pointer;
+  box-shadow: 0 0 8px rgba(255, 209, 0, 0.8);
+  border: 2px solid #07111E;
+}
+
+/* Animaciones sutiles */
+@keyframes pulseSubtle {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.04); opacity: 0.9; }
+}
+
+.animate-pulse-subtle {
+  animation: pulseSubtle 2.5s infinite ease-in-out;
+}
