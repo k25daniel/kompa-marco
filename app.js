@@ -41,6 +41,9 @@
   const countdownNumber = document.getElementById('countdownNumber');
   const liveBadge = document.getElementById('liveBadge');
   const gestureHint = document.getElementById('gestureHint');
+  const cameraPromptOverlay = document.getElementById('cameraPromptOverlay');
+  const btnGrantCamera = document.getElementById('btnGrantCamera');
+  const promptGalleryInput = document.getElementById('promptGalleryInput');
 
   // Contenedores de controles
   const cameraControls = document.getElementById('cameraControls');
@@ -135,37 +138,120 @@
   });
 
   // ==========================================================================
-  // MANEJO DE CÁMARA (WEBRTC)
+  // MANEJO DE CÁMARA (WEBRTC) ROBUSTO Y COMPATIBLE CON MÓVILES
   // ==========================================================================
-  async function startCamera() {
-    stopCamera();
+  async function requestCameraStream(facing) {
+    const attempts = [
+      { audio: false, video: { facingMode: { ideal: facing }, width: { ideal: 1280 }, height: { ideal: 720 } } },
+      { audio: false, video: { facingMode: { ideal: facing } } },
+      { audio: false, video: { facingMode: facing } },
+      { audio: false, video: true }
+    ];
 
-    const constraints = {
-      audio: false,
-      video: {
-        facingMode: currentFacingMode,
-        width: { ideal: 1920 },
-        height: { ideal: 1080 }
+    let lastError = null;
+    for (const c of attempts) {
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia(c);
+        return stream;
+      } catch (e) {
+        lastError = e;
       }
-    };
+    }
+    throw lastError || new Error('No se pudo acceder a la cámara.');
+  }
+
+  async function startCamera(fromUserGesture = false) {
+    stopCamera();
+    userImage = null; // Quitar cualquier imagen previa para ver la cámara
+
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+      showCameraPrompt();
+      showToast('Tu navegador o entorno requiere activar la cámara manualmente.', '📷');
+      return;
+    }
 
     try {
-      videoStream = await navigator.mediaDevices.getUserMedia(constraints);
+      videoStream = await requestCameraStream(currentFacingMode);
       video.srcObject = videoStream;
-      await video.play();
+      video.muted = true;
+      video.playsInline = true;
+
+      // Esperar a que el stream esté listo para ser dibujado
+      await new Promise((resolve) => {
+        if (video.videoWidth > 0 && video.readyState >= 2) return resolve();
+        video.onloadedmetadata = () => resolve();
+        video.oncanplay = () => resolve();
+        setTimeout(resolve, 800);
+      });
+
+      try {
+        await video.play();
+      } catch (playErr) {
+        console.warn('Reproducción de video pendiente de interacción:', playErr);
+      }
+
       isCameraActive = true;
+      hideCameraPrompt();
       liveBadge.classList.remove('hidden');
       cameraControls.classList.remove('hidden');
       capturedControls.classList.add('hidden');
       editingTools.classList.add('opacity-40', 'pointer-events-none');
     } catch (err) {
-      console.warn('Cámara no disponible o permiso denegado:', err);
+      console.warn('Cámara requiere permiso explícito:', err);
       isCameraActive = false;
       liveBadge.classList.add('hidden');
-      // Si la cámara falla, creamos una imagen placeholder elegante
-      createPlaceholderPhoto();
-      showToast('Cámara inactiva. Puedes subir tu foto desde Galería.', '📷');
+      cameraControls.classList.remove('hidden');
+      capturedControls.classList.add('hidden');
+      showCameraPrompt();
+      if (fromUserGesture) {
+        showToast('Permiso de cámara denegado en tu navegador.', '⚠️');
+      }
     }
+  }
+
+  function showCameraPrompt() {
+    if (cameraPromptOverlay) {
+      cameraPromptOverlay.classList.remove('hidden');
+      cameraPromptOverlay.classList.add('flex');
+    }
+  }
+
+  function hideCameraPrompt() {
+    if (cameraPromptOverlay) {
+      cameraPromptOverlay.classList.add('hidden');
+      cameraPromptOverlay.classList.remove('flex');
+    }
+  }
+
+  // Botón explícito dentro del viewport para otorgar permiso con un toque (requerimiento de iOS y Safari)
+  if (btnGrantCamera) {
+    btnGrantCamera.addEventListener('click', async () => {
+      await startCamera(true);
+    });
+  }
+
+  // Subir desde el prompt de cámara
+  if (promptGalleryInput) {
+    promptGalleryInput.addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const img = new Image();
+        img.onload = () => {
+          userImage = img;
+          resetPhotoTransform();
+          stopCamera();
+          hideCameraPrompt();
+          enterEditMode();
+          showToast('Foto cargada desde galería', '🖼️');
+        };
+        img.src = event.target.result;
+      };
+      reader.readAsDataURL(file);
+      e.target.value = '';
+    });
   }
 
   function stopCamera() {
@@ -180,7 +266,7 @@
   btnFlipCamera.addEventListener('click', async () => {
     currentFacingMode = (currentFacingMode === 'user') ? 'environment' : 'user';
     showToast(currentFacingMode === 'user' ? 'Cámara Frontal' : 'Cámara Trasera', '🔄');
-    await startCamera();
+    await startCamera(true);
   });
 
   // Alternar temporizador (0s -> 3s -> 0s)
@@ -395,7 +481,8 @@
 
   btnRetake.addEventListener('click', async () => {
     userImage = null;
-    await startCamera();
+    hideCameraPrompt();
+    await startCamera(true);
   });
 
   // ==========================================================================
@@ -1399,3 +1486,4 @@
   }
 
 })();
+

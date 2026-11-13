@@ -110,11 +110,34 @@
     <!-- Contenedor con relación de aspecto fija 9:16 escalada responsive -->
     <div id="canvasViewport" class="relative w-full max-w-[390px] aspect-[9/16] max-h-[82vh] rounded-[24px] overflow-hidden shadow-2xl border border-white/15 bg-black flex items-center justify-center select-none">
       
-      <!-- Video elemento oculto para stream de cámara -->
-      <video id="cameraVideo" autoplay playsinline muted class="hidden"></video>
+      <!-- Video elemento para stream de cámara (NUNCA display:none para que Safari/WebKit decodifique frames) -->
+      <video id="cameraVideo" autoplay playsinline webkit-playsinline muted class="fixed -top-[9999px] -left-[9999px] w-[320px] h-[240px] opacity-0 pointer-events-none"></video>
 
       <!-- Canvas interactivo principal (1080x1920 interno) -->
       <canvas id="mainCanvas" width="1080" height="1920" class="w-full h-full object-contain cursor-grab active:cursor-grabbing touch-none block"></canvas>
+
+      <!-- Overlay interactivo para activar permiso de cámara si el navegador lo bloqueó al inicio -->
+      <div id="cameraPromptOverlay" class="absolute inset-0 bg-[#07111E]/90 backdrop-blur-md hidden flex-col items-center justify-center p-6 text-center z-25 space-y-4">
+        <div class="w-16 h-16 rounded-full bg-kompa-meta/20 border-2 border-kompa-meta text-kompa-meta flex items-center justify-center shadow-kompa-gold">
+          <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/>
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/>
+          </svg>
+        </div>
+        <div class="space-y-1">
+          <h3 class="text-base font-black tracking-wider text-white">ACTIVAR CÁMARA</h3>
+          <p class="text-xs text-kompa-sand/80 max-w-xs">Permite el acceso a tu cámara para encuadrarte en tiempo real con el marco oficial KOMPA.</p>
+        </div>
+        <div class="w-full flex flex-col space-y-2 max-w-xs">
+          <button id="btnGrantCamera" class="w-full py-3 px-4 rounded-xl font-black text-xs uppercase tracking-wider bg-kompa-meta text-kompa-ink shadow-kompa-gold active:scale-95 transition flex items-center justify-center space-x-2">
+            <span>📸 Activar Mi Cámara</span>
+          </button>
+          <label class="w-full py-2.5 px-4 rounded-xl font-bold text-xs uppercase tracking-wider bg-white/10 hover:bg-white/15 text-kompa-sand border border-white/15 active:scale-95 transition flex items-center justify-center space-x-2 cursor-pointer">
+            <span>📁 O subir desde Galería</span>
+            <input type="file" id="promptGalleryInput" accept="image/*" class="hidden">
+          </label>
+        </div>
+      </div>
 
       <!-- Overlay de Flash al disparar la cámara -->
       <div id="flashOverlay" class="absolute inset-0 bg-white opacity-0 pointer-events-none transition-opacity duration-300 z-20"></div>
@@ -434,3 +457,4 @@
   <script src="app.js"></script>
 </body>
 </html>
+

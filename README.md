@@ -118,3 +118,4 @@ Puedes poner en producción esta herramienta bajo tu dominio principal mediante 
 
 © 2026 **KOMPA Costa Rica**. Todos los derechos reservados.
 *Crea Tu Propia Historia.*
+
