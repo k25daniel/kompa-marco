@@ -655,6 +655,7 @@
     // Borde elegante alrededor de la ventana de foto
     c.lineWidth = 3;
     c.strokeStyle = 'rgba(255, 255, 255, 0.2)';
+    c.beginPath();
     drawRoundedRectPath(c, WINDOW_X, WINDOW_Y, WINDOW_W, WINDOW_H, WINDOW_RADIUS);
     c.stroke();
 
@@ -731,6 +732,7 @@
     grad.addColorStop(0, PALETTE.meta);
     grad.addColorStop(1, PALETTE.cumbre);
     c.strokeStyle = grad;
+    c.beginPath();
     drawRoundedRectPath(c, WINDOW_X, WINDOW_Y, WINDOW_W, WINDOW_H, WINDOW_RADIUS);
     c.stroke();
 
@@ -785,6 +787,7 @@
     // Borde fino color Turquesa Océano
     c.lineWidth = 3.5;
     c.strokeStyle = PALETTE.oceano;
+    c.beginPath();
     drawRoundedRectPath(c, WINDOW_X, WINDOW_Y, WINDOW_W, WINDOW_H, WINDOW_RADIUS);
     c.stroke();
 
@@ -976,6 +979,7 @@
 
     // Correa de silicona (píldora con textura segmentada)
     c.fillStyle = '#1A2535';
+    c.beginPath();
     drawRoundedRectPath(c, -85, -16, 170, 32, 16);
     c.fill();
 
@@ -990,12 +994,14 @@
 
     // Placa metálica central KOMPA METAL (#B5B8B7)
     c.fillStyle = PALETTE.metal;
+    c.beginPath();
     drawRoundedRectPath(c, -38, -12, 76, 24, 6);
     c.fill();
 
     // Borde brillante de la placa
     c.strokeStyle = 'rgba(255, 255, 255, 0.8)';
     c.lineWidth = 1;
+    c.beginPath();
     drawRoundedRectPath(c, -38, -12, 76, 24, 6);
     c.stroke();
 
@@ -1038,6 +1044,7 @@
 
     // 1. Azul
     c.fillStyle = '#002B7F';
+    c.beginPath();
     drawRoundedRectPath(c, flagX, flagY, flagW, flagH, 4);
     c.fill();
     c.shadowColor = 'transparent';
@@ -1053,6 +1060,7 @@
     // Borde sutil de la bandera
     c.strokeStyle = 'rgba(255, 255, 255, 0.3)';
     c.lineWidth = 1;
+    c.beginPath();
     drawRoundedRectPath(c, flagX, flagY, flagW, flagH, 4);
     c.stroke();
 
@@ -1074,6 +1082,7 @@
     const h = 26;
 
     c.fillStyle = bgColor;
+    c.beginPath();
     drawRoundedRectPath(c, x - w / 2, y - h / 2, w, h, 13);
     c.fill();
 
@@ -1146,7 +1155,10 @@
   }
 
   function drawRoundedRectPath(c, x, y, width, height, radius) {
-    c.beginPath();
+    if (typeof c.roundRect === 'function') {
+      c.roundRect(x, y, width, height, radius);
+      return;
+    }
     c.moveTo(x + radius, y);
     c.lineTo(x + width - radius, y);
     c.arcTo(x + width, y, x + width, y + radius, radius);
